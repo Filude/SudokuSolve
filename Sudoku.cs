@@ -32,15 +32,30 @@
             // TODO
         }
 
+        private List<Location> getAllSquareLocationsInBlock(Location blockLocation) {
+
+            List<Location> locations = new List<Location>();
+
+            for (int x = blockLocation.x; x < blockLocation.x + 3; x++) {
+                for (int y = blockLocation.y; y < blockLocation.y + 3; y++) {
+                    locations.Add(new Location(x,y));
+                }
+            }
+
+            return locations;
+
+        }
+
         private void improveRandomBlock() {
 
-            // TODO: Choose random block
-
+            Random random = new Random();
+            Location randomBlockLocation = new Location(random.Next(0, 3), random.Next(0, 3));
             Dictionary<Swap, int> swapScores;
+            List<Location> squareLocationsInBlock = getAllSquareLocationsInBlock(randomBlockLocation);
 
-            foreach (/*TODO: square in block that is not fixed*/) {
+            foreach (squareLocationsInBlock as sqaureLocation) {
 
-                foreach (/*TODO: square in block except self that is not fixed*/) {
+                foreach (squareLocationsInBlock as sqaureLocation) {
 
                     swap(swapLocation1, swapLocation2); // Execute swap
                     int newScore = getUpdatedScore(swapLocation1, swapLocation2);
