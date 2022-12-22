@@ -37,9 +37,11 @@ namespace Sudoku {
 
         public static List<List<int>> convertRawSudokuInput(String rawInput) {
             
+            // Split input on spaces and initialize a variable for the rows
             string[] input = rawInput.Trim().Split(' ');
             List<List<int>> rows = new List<List<int>>();
 
+            // Populate the 'rows' variable with the input data
             for (int row = 0; row < 9; row++) {
 
                 rows.Add(new List<int>());

@@ -2,13 +2,13 @@
 
     class Sudoku {
 
-        private List<List<Value>> values; // two dimensional list, y,x
-        private int totalScore; // score of the sudoku, lower is better
-        private List<int> rowScores;
-        private List<int> columnScores;
-        private int S;
-        private int viewDistance;
-        private int randomWalkDifferenceTrigger;
+        private List<List<Value>> values; // two dimensional list, y,x (because we index by row first)
+        private int totalScore; // total score of the sudoku, lower is better
+        private List<int> rowScores; // score per row
+        private List<int> columnScores; // score per column
+        private int S; // how many random search operations should be performed with a random walk
+        private int viewDistance; // how far back do we look in the score values to determine when to random walk
+        private int randomWalkDifferenceTrigger; // minimum difference between last scores needed to trigger a random walk
 
         public Sudoku(List<List<int>> fixedValues) {
 
@@ -169,26 +169,16 @@
             foreach (int rowNumber in rowNumbers) {
                 List<Value> row = this.values[rowNumber];
                 int rowScore = getAmountOfMissingValues(row);
+                this.totalScore = this.totalScore - this.rowScores[rowNumber] + rowScore;
                 this.rowScores[rowNumber] = rowScore;
             }
 
             foreach (int columnNumber in columnNumbers) {
                 List<Value> column = getColumn(columnNumber);
                 int columnScore = getAmountOfMissingValues(column);
+                this.totalScore = this.totalScore - this.columnScores[columnNumber] + columnScore;
                 this.columnScores[columnNumber] = columnScore;
             }
-
-            int totalScoreTemp = 0;
-
-            foreach (int score in this.rowScores) {
-                totalScoreTemp += score;
-            }
-
-            foreach (int score in this.columnScores) {
-                totalScoreTemp += score;
-            }
-
-            this.totalScore = totalScoreTemp;
             
         }
 
