@@ -295,8 +295,12 @@
             }
 
         }
+        public string parameters()
+        {
+            return "\nS: " + this.S + "\nviewDistance: " + this.viewDistance + "\nrandomWalkDifferenceTrigger: " + this.randomWalkDifferenceTrigger;
+        }
 
-        public void solve() {
+        public int solve() {
 
             int counter = 0; // Iteration counter
             List<int> lastScores = new List<int>(); // List with last seen scores
@@ -342,6 +346,7 @@
             print();
 
             Console.WriteLine("Solved in " + counter.ToString() + " iterations.");
+            return counter;
 
         }
 
