@@ -9,13 +9,20 @@
         private int S; // how many random search operations should be performed with a random walk
         private int viewDistance; // how far back do we look in the score values to determine when to random walk
         private int randomWalkDifferenceTrigger; // minimum difference between last scores needed to trigger a random walk
+        private bool randomWalkAcrossBlocks; // if set to true the random walk will choose a different block every time,
+                                             // otherwise it will choose one block and stay there
+
+        // NOTE: A block is considered a block of 9x9 squares, and a square is one cell with a number.
 
         public Sudoku(List<List<int>> fixedValues) {
 
             this.values = addRandomValues(fixedValues); // Add random values in the non fixed squares
-            this.S = 1;
+
+            // PARAMATERS
+            this.S = 2;
             this.viewDistance = 5;
             this.randomWalkDifferenceTrigger = 2;
+            this.randomWalkAcrossBlocks = true;
 
             print();
 
@@ -274,11 +281,22 @@
         private void randomWalk() {
 
             Random random = new Random();
+            Location randomBlockLocation;
+            List<Location> squareLocationsInBlock = new List<Location>();
 
-            Location randomBlockLocation = new Location(random.Next(0, 3), random.Next(0, 3));
-            List<Location> squareLocationsInBlock = getAllSquareLocationsInBlock(randomBlockLocation);
+            // If "randomWalkAcrossBlocks" is set to false, choose one random block now and stay with that one
+            if (!randomWalkAcrossBlocks) {
+                randomBlockLocation = new Location(random.Next(0, 3), random.Next(0, 3));
+                squareLocationsInBlock = getAllSquareLocationsInBlock(randomBlockLocation);
+            }
 
             for (int i = 0; i < this.S; i++) {
+
+                // If "randomWalkAcrossBlocks" is set to true, choose a new random block every time
+                if (randomWalkAcrossBlocks) {
+                    randomBlockLocation = new Location(random.Next(0, 3), random.Next(0, 3));
+                    squareLocationsInBlock = getAllSquareLocationsInBlock(randomBlockLocation);
+                }
 
                 Location randomSquareLocation1 = squareLocationsInBlock[random.Next(0, 9)];
                 Location randomSquareLocation2 = squareLocationsInBlock[random.Next(0, 9)];
