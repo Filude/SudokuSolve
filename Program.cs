@@ -60,12 +60,29 @@ namespace Sudoku {
         }
 
         public static void Main(String[] args) {
+            int repeats = 1; //Repeats for testing purposes
+            List<int> iterList = new List<int>(); //List to store the amount of iterations needed to solve
 
-            String rawSudokuInput = Console.ReadLine();
+            String rawSudokuInput = Console.ReadLine();                         
             List<List<int>> sudokuInput = convertRawSudokuInput(rawSudokuInput);
-            Sudoku sudoku = new Sudoku(sudokuInput);
-            sudoku.solve();
+            
 
+            for(int i = 0; i<repeats; i++)
+            {
+            Sudoku sudoku = new Sudoku(sudokuInput);
+            iterList.Add(sudoku.solve());
+            if (i+1 == repeats)
+            {
+                Console.WriteLine(sudoku.parameters());
+            }
+            }
+            int counter = 0;
+            foreach(int j in iterList)
+            {
+                counter += j;
+            }
+            Console.WriteLine("Average number of iterations for " + repeats + " repeats: "+ counter/iterList.Count);
+            
         }
 
     }
